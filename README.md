@@ -1,4 +1,5 @@
 # Glioblastoma ERβ Isoform Explorer
+![App Preview](preview.png)
 
 An interactive R/Shiny dashboard designed to visualize transcriptional changes in U87 glioblastoma cells. This tool compares gene expression across Control, ERβ-Knockout, and the reintroduction of ERβ1 and ERβ5 isoforms.
 
