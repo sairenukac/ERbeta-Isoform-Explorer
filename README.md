@@ -15,6 +15,5 @@ This app utilizes RNA-seq data (TPM) from study **GSE104296**. It explores how s
 ## How to Run Locally
 1. Clone this repository.
 2. Ensure you have R/RStudio installed.
-3. Install dependencies:
-   `install.packages(c("shiny", "ggplot2", "dplyr", "DT", "ggpubr", "readr"))`
+3. Perform preprocessing as per `preprocessing.qmd`
 4. Run `shiny::runApp()`
