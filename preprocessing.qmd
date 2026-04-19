@@ -1,0 +1,90 @@
+---
+title: "Data Preprocessing"
+format:
+  html:
+    embed-resources: true
+---
+
+## Glioblastoma ERβ Isoform Explorer - Data Preprocessing and Gene Annotation Workflow
+
+**Installing and Loading Required Packages**
+
+```{r}
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+
+install.packages(c("shiny", "ggplot2", "dplyr", "tidyr", "readr"))
+BiocManager::install("org.Hs.eg.db")
+```
+
+```{r}
+#| warning: false
+#| message: false
+
+library(shiny) 
+library(ggplot2) 
+library(dplyr) 
+library(tidyr) 
+library(readr)
+library(org.Hs.eg.db)
+```
+
+**Data Reading and Cleaning**
+
+```{r}
+#| warning: false
+#| message: false
+
+data <- read_tsv("GSE104296_norm_counts_TPM_GRCh38.p13_NCBI.tsv.gz")
+
+data_df <- as.data.frame(data)
+rownames(data_df) <- data_df$GeneID
+data_clean <- data_df[, -1]
+
+# Create Metadata
+meta <- data.frame(
+    sample = c("GSM2794663", "GSM2794664", "GSM2794665", "GSM2794666", 
+               "GSM2794667", "GSM2794668", "GSM2794669", "GSM2794670"),
+    condition = c("Control", "Control", "ERb-KO", "ERb-KO", 
+                  "ERb1", "ERb1", "ERb5", "ERb5")
+)
+```
+
+```{r}
+#| warning: false
+#| message: false
+
+# Check if rows match columns
+all(colnames(data_clean) == meta$sample)
+```
+
+**Gene Annotation**
+
+```{r}
+all_ids <- as.character(rownames(data_clean))
+```
+
+```{r}
+#| cache: true
+#| message: false
+
+# Annotating Genes
+mapping_results <- AnnotationDbi::select(org.Hs.eg.db, 
+                                        keys = all_ids, 
+                                        columns = c("SYMBOL", "GENENAME"), 
+                                        keytype = "ENTREZID")
+```
+
+```{r}
+# Processing results
+mapping_table <- mapping_results %>%
+  dplyr::distinct(ENTREZID, .keep_all = TRUE) %>%
+  dplyr::rename(GeneID = ENTREZID, 
+                Symbol = SYMBOL, 
+                `Gene Name / Type` = GENENAME)
+
+
+readr::write_csv(mapping_table, "mapped_genes.csv")
+```
