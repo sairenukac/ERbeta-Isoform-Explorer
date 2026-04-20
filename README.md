@@ -13,6 +13,10 @@ An interactive R/Shiny dashboard designed to visualize transcriptional changes i
 ## Biological Context
 This app utilizes RNA-seq data (TPM) from study **GSE104296**. It explores how specific Estrogen Receptor beta (ERβ) isoforms modulate unique pathways such as NF-κB, Jak/STAT, and mTOR signaling.
 
+ERβ1: This is the "full-length" or standard version. It is generally the one that does the hard work of stopping the tumor.
+
+ERβ5: This is a shorter variant. In many cancers, different isoforms can actually compete with each other. One might block the tumor, while another might be "silent" or even help the tumor hide from the immune system.
+
 ##  Features
 - **Dynamic Search:** Explore 39,000+ genes using NCBI IDs or Gene Symbols.
 - **Statistical Inference:** Automated p-value calculation comparing experimental groups to Control.
