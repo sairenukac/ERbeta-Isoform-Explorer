@@ -1,4 +1,5 @@
 # Glioblastoma ERβ Isoform Explorer
+![App Preview](preview.png)
 
 An interactive R/Shiny dashboard designed to visualize transcriptional changes in U87 glioblastoma cells. This tool compares gene expression across Control, ERβ-Knockout, and the reintroduction of ERβ1 and ERβ5 isoforms.
 
@@ -14,6 +15,5 @@ This app utilizes RNA-seq data (TPM) from study **GSE104296**. It explores how s
 ## How to Run Locally
 1. Clone this repository.
 2. Ensure you have R/RStudio installed.
-3. Install dependencies:
-   `install.packages(c("shiny", "ggplot2", "dplyr", "DT", "ggpubr", "readr"))`
+3. Perform preprocessing as per `preprocessing.qmd`
 4. Run `shiny::runApp()`
