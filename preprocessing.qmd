@@ -28,6 +28,7 @@ library(ggplot2)
 library(dplyr) 
 library(tidyr) 
 library(readr)
+library(tidyverse)
 library(org.Hs.eg.db)
 ```
 
@@ -84,7 +85,34 @@ mapping_table <- mapping_results %>%
   dplyr::rename(GeneID = ENTREZID, 
                 Symbol = SYMBOL, 
                 `Gene Name / Type` = GENENAME)
+```
 
+Calculating Statistics
 
-readr::write_csv(mapping_table, "mapped_genes.csv")
+```{r}
+control_cols <- c("GSM2794663", "GSM2794664")
+ko_cols      <- c("GSM2794667", "GSM2794668")
+
+# Calculating Log2 Fold Change and p-values
+stats_df <- data_clean %>%
+  mutate(
+    log2FC = rowMeans(across(all_of(ko_cols))) - rowMeans(across(all_of(control_cols))),
+    # Performing t-test
+    pvalue = apply(as.matrix(.), 1, function(x) {
+      # Handling genes with zero variance/constant values
+      tryCatch(t.test(x[ko_cols], x[control_cols])$p.value, error = function(e) NA)
+    })
+  ) %>%
+  tibble::rownames_to_column("GeneID") %>%
+  dplyr::select(GeneID, log2FC, pvalue)
+
+final_mapping_table <- mapping_table %>%
+  left_join(stats_df, by = "GeneID")
+
+write_csv(final_mapping_table, "annotated_with_stats.csv")
+```
+
+```{r}
+# Saving cleaned expression data for the app
+write_csv(tibble::rownames_to_column(data_clean, "GeneID"), "expression_data_clean.csv")
 ```
