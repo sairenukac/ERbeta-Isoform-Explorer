@@ -3,7 +3,7 @@ library(ggplot2)
 library(dplyr)
 library(readr)
 library(DT)
-library(ggpubr) # For p-values
+library(ggpubr)
 
 # Loading data
 expression_data <- read_csv("expression_data_clean.csv") %>% 
