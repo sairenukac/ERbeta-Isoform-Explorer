@@ -26,5 +26,5 @@ ERβ5: This is a shorter variant. In many cancers, different isoforms can actual
 ## How to Run Locally
 1. Clone this repository.
 2. Ensure you have R/RStudio installed.
-3. Perform preprocessing as per `preprocessing.qmd`
-4. Run `shiny::runApp()`
+3. Perform preprocessing as per `preprocessing.R`.
+4. Run the app `app.R`.
